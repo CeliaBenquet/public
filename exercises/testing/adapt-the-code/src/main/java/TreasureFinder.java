@@ -1,10 +1,15 @@
 public class TreasureFinder {
-    private final Geolocator geolocator;
+    private final LocationService geolocator;
 
     // There MUST be a parameterless constructor,
     // it is used by our Super-Fancy-Framework-That-Does-Not-Support-Parameters™
     public TreasureFinder() {
-        geolocator = new Geolocator();
+        geolocator = new GeolocatorLocationService();
+    }
+
+    // Constructor used for testing
+    public TreasureFinder(LocationService geo) {
+        this.geolocator = geo;
     }
 
     public String getHint(Position treasurePos) {

@@ -1,14 +1,20 @@
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class WorkLog {
     private final Map<Person, Integer> hoursWorked;
     private final Map<Person, ZonedDateTime> workStart;
+    private final FakeClock clock;
 
-    public WorkLog() {
+    public WorkLog(FakeClock clock_) {
         hoursWorked = new HashMap<>();
         workStart = new HashMap<>();
+        clock = clock_;
     }
 
     public void startWorking(Person person) {
@@ -19,7 +25,7 @@ public final class WorkLog {
             throw new IllegalStateException("This person has already started working!");
         }
 
-        workStart.put(person, ZonedDateTime.now());
+        workStart.put(person, ZonedDateTime.now(clock));
     }
 
     public void stopWorking(Person person) {
@@ -28,18 +34,10 @@ public final class WorkLog {
             throw new IllegalStateException("This person hasn't started working!");
         }
 
-        ZonedDateTime stop = ZonedDateTime.now();
+        ZonedDateTime stop = ZonedDateTime.now(clock);
 
-        int hours = 0;
-        if (start.toLocalDate().equals(stop.toLocalDate())) {
-            // Easy case, it's the same day
-            hours = stop.getHour() - start.getHour();
-        } else {
-            // A bit more complicated
-            hours += 24 - start.getHour();
-            hours += stop.getDayOfYear() - start.getDayOfYear();
-            hours += stop.getHour();
-        }
+        // Automatic calculation of the duration thanks to Java library
+        int hours = (int) start.until(stop, ChronoUnit.HOURS);
 
         hoursWorked.merge(person, hours, Integer::sum);
         workStart.remove(person);
@@ -49,3 +47,4 @@ public final class WorkLog {
         return hoursWorked.get(person);
     }
 }
+

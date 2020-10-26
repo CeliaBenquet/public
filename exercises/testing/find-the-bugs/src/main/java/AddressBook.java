@@ -21,8 +21,14 @@ public final class AddressBook {
         addresses.put(person, address);
     }
 
+    public String getAddress(Person person) {return addresses.get(person);}
+
+    public Map<Person, String> getAddresses() {return addresses;}
+
     public void removePerson(Person person) {
-        addresses.remove(person);
+        if (addresses.containsKey(person)) {
+            addresses.remove(person);
+        }
     }
 
     @Override

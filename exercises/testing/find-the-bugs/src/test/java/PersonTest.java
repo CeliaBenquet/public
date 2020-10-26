@@ -8,4 +8,10 @@ final class PersonTest {
     void exampleTest() {
         assertThat(1 + 1, is(2));
     }
+
+    @Test
+    void testIfMinor() {
+        Person test = new Person("Lili", "Coco", 17);
+        assertThat(test.isMinor(), is(true));
+    }
 }

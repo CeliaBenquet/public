@@ -28,7 +28,7 @@ public final class Person {
      * Indicates whether this Person is a minor, i.e. under 18 years old.
      */
     boolean isMinor() {
-        return age < 17;
+        return age < 18;
     }
 
     /**
@@ -49,11 +49,12 @@ public final class Person {
         }
 
         Person other = (Person) obj;
-        return firstName.equals(other.firstName) && age == other.age;
+        return firstName.equals(other.firstName) && age == other.age && lastName.equals(other.lastName);
     }
 
     @Override
     public int hashCode(){
-        return firstName.hashCode() + 31 * Integer.hashCode(age);
+        return firstName.hashCode() + 31 * Integer.hashCode(age) + lastName.hashCode();
     }
+
 }

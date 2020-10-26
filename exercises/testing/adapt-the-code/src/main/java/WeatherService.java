@@ -1,10 +1,23 @@
 import java.io.IOException;
 
 public class WeatherService {
+    private final HttpClient client;
+
+    public WeatherService(){
+        this.client = new RealHttpClient();
+
+    }
+
+    public WeatherService(HttpClient client){
+        this.client = client;
+
+    }
+
     public Weather getWeatherToday() {
         String data;
         try {
-            data = new RealHttpClient().get("http://example.org/weather/today");
+
+            data = client.get("http://example.org/weather/today");
         } catch (IOException e) {
             return Weather.UNKNOWN;
         }
