@@ -21,6 +21,29 @@ public class SwengBookingSystem implements BookingSystem {
     public void chooseSeat(@Nonnull Person person, @Nonnull String seat)
             throws IllegalSeatException, PersonAlreadySeatedException, SeatAlreadyTakenException {
 
+        Integer row = Integer.parseInt(seat.replaceAll("[\\D]", ""));
+        seat = seat.replace(row.toString(), "");
+        if ((row <= 26) && (seatExists(seat))) {
+            if (personSeated(person)) {
+                if (seatTaken(seat)) {
+                    seatAssignment.put(seat, person);
+                } else { throw new SeatAlreadyTakenException(); }
+            } else { throw new PersonAlreadySeatedException(); }
+        } else { throw new IllegalSeatException(); }
+
+
+    }
+
+    private boolean seatExists(String seat) {
+        return (seat=="A" || seat=="B" || seat=="C" || seat=="D" || seat=="E" || seat=="F");
+    }
+
+    private boolean seatTaken(String seat) {
+        return seatAssignment.containsKey(seat);
+    }
+
+    private boolean personSeated(Person person) {
+        return seatAssignment.containsValue(person);
     }
 
     @Override
