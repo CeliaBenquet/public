@@ -171,7 +171,7 @@ public class MinistryOfInformationTests {
         assertEquals(house, moi.findHouse(address));
     }
 
-    @Ignore("Remove this line when doing the Population Census problem")
+   // @Ignore("Remove this line when doing the Population Census problem")
     @Test
     public void testGetPopulation()
         throws InvalidAddressException, AddressNotFoundException {

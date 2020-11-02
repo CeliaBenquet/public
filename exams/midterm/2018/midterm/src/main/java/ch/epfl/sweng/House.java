@@ -38,5 +38,20 @@ public class House extends AddressUnit {
         throws InvalidAddressException {
         throw new InvalidAddressException("The house can not have sub units");
     }
+
+    @Override
+    public AddressUnit findUnit(List<String> address)
+            throws InvalidAddressException, AddressNotFoundException {
+        checkAddress(address);
+        if (address.size() > 4) {
+            throw new InvalidAddressException("Invalid address.");
+        }
+
+        return this;
+
+
+    }
+
+
 }
 

@@ -2,6 +2,8 @@ package ch.epfl.sweng;
 
 import java.util.List;
 
+import jdk.jshell.execution.JdiExecutionControlProvider;
+
 /**
  * Do not modify the method signatures in this class.
  * Do not remove methods from the class.
@@ -39,8 +41,14 @@ public class MinistryOfInformation {
     public House findHouse(List<String> address)
         throws InvalidAddressException, AddressNotFoundException {
         // Put your code here.
-        throw new RuntimeException("Not implemented");
+
+        AddressUnit au = directory.findUnit(address);
+        if (!(au instanceof House)) {
+            throw new InvalidAddressException("Address isn't complete.");
+        }
+        return (House) au;
     }
+
 
     /**
      * Inserts a new house by the given address into the directory.
@@ -73,7 +81,9 @@ public class MinistryOfInformation {
     public int getPopulation(List<String> address)
         throws InvalidAddressException, AddressNotFoundException {
         // Put your code here.
-        throw new RuntimeException("Not implemented");
+        AddressUnit au = directory.findUnit(address);
+        return au.getPopulation();
+
     }
 
     /**

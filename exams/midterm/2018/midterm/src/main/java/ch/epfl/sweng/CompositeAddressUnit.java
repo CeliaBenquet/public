@@ -34,6 +34,14 @@ public class CompositeAddressUnit extends AddressUnit {
         return subUnits.get(name);
     }
 
+    public int getPopulation() {
+        int population = 0;
+        for (Map.Entry<String, AddressUnit> entry : subUnits.entrySet()) {
+            population += entry.getValue().getPopulation();
+        }
+        return population;
+    }
+
     /**
      * The implementation of {@link AddressUnit#addAddress(List, House)}, finds the
      * smallest existing address unit in the address list and creates a
@@ -72,6 +80,22 @@ public class CompositeAddressUnit extends AddressUnit {
                 addSubUnit(subUnit);
             }
             subUnit.addAddress(address.subList(1, address.size()), house);
+        }
+    }
+
+    public AddressUnit findUnit(List<String> address)
+            throws InvalidAddressException, AddressNotFoundException {
+        checkAddress(address);
+        if (address.size() == 1) {
+            return this;
+        } else {
+            String subUnitName = address.get(1);
+            AddressUnit subUnit = getSubUnit(subUnitName);
+            if (subUnit == null) {
+                throw new AddressNotFoundException("One of the subunit is invalid.");
+            }
+
+            return subUnit.findUnit(address.subList(1, address.size()));
         }
     }
 }
