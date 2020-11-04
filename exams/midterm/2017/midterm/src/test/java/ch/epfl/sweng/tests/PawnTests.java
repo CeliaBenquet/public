@@ -40,4 +40,25 @@ public class PawnTests extends PieceTests<Pawn> {
     public void testMoveBackwards() throws InvalidMoveException, InvalidPositionException {
         pieceWhite.moveTo('d', 3);
     }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testMoveDiagonally() throws InvalidMoveException, InvalidPositionException {
+        pieceWhite.moveTo('e', 5);
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testMoveHorizontally() throws InvalidMoveException, InvalidPositionException {
+        pieceWhite.moveTo('e', 4);
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testMoveJump() throws InvalidMoveException, InvalidPositionException {
+        pieceWhite.moveTo('d', 6);
+    }
+
+
+
+
+
+
 }

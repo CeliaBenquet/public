@@ -1,5 +1,7 @@
 package ch.epfl.sweng.tests;
 
+import org.junit.Test;
+
 import ch.epfl.sweng.Color;
 import ch.epfl.sweng.InvalidMoveException;
 import ch.epfl.sweng.InvalidPositionException;
@@ -40,4 +42,10 @@ public class KingTests extends PieceTests<King> {
         King k = new King(position, Color.BLACK);
         k.moveTo('d', 6);
     }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testHorizontallyInvalid() throws InvalidMoveException, InvalidPositionException {
+        piece.moveTo('f', 4);
+    }
+
 }

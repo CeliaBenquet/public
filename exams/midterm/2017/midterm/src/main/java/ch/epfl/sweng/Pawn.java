@@ -1,5 +1,6 @@
 package ch.epfl.sweng;
 
+import static ch.epfl.sweng.Color.BLACK;
 import static ch.epfl.sweng.Color.WHITE;
 
 /**
@@ -26,5 +27,14 @@ public class Pawn extends Piece {
     @Override
     public Pawn copy() {
         return new Pawn(this);
+    }
+
+    public Superpiece promote(Queen queen) throws InvalidMoveException{
+        boolean whiteAtEnd = (this.getColor()== WHITE && this.getPosition().getHorizontal() == 8);
+        boolean blackAtEnd = (this.getColor() == BLACK && this.getPosition().getHorizontal() == 1);
+        if (whiteAtEnd || blackAtEnd) {
+            return new Superpiece(queen);
+        }
+        throw new InvalidMoveException();
     }
 }

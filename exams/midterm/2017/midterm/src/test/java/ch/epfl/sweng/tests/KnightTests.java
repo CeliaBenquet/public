@@ -1,5 +1,7 @@
 package ch.epfl.sweng.tests;
 
+import org.junit.Test;
+
 import ch.epfl.sweng.Color;
 import ch.epfl.sweng.InvalidMoveException;
 import ch.epfl.sweng.InvalidPositionException;
@@ -22,7 +24,7 @@ public class KnightTests extends PieceTests<Knight> {
                     continue;
 
                 Knight k = new Knight(position, Color.WHITE);
-                int row  = position.getVertical() + distHori;
+                int row = position.getVertical() + distHori;
                 char col = (char) (position.getHorizontal() + distVert);
 
                 Position destination = Position.positionIfLegal(col, row);
@@ -41,4 +43,14 @@ public class KnightTests extends PieceTests<Knight> {
     public void testIllegal() throws InvalidMoveException, InvalidPositionException {
         piece.moveTo('d', 6);
     }
+
+
+    @Test(expected = InvalidMoveException.class)
+    public void testMoveDiagonally() throws InvalidMoveException, InvalidPositionException {
+        piece.moveTo('c', 3);
+    }
+
+
 }
+
+

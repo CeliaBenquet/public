@@ -6,7 +6,7 @@ package ch.epfl.sweng;
  * Rook can move any amount of steps along one of the main axes (either horizontal or vertical).
  */
 
-public class Rook extends Piece {
+public class Rook extends Piece implements SuperpieceInterface {
     public Rook(Position position, Color color) {
         super(position, color);
     }

@@ -6,7 +6,7 @@ package ch.epfl.sweng;
  * A bishop can only move diagonally.
  */
 
-public class Bishop extends Piece {
+public class Bishop extends Piece implements SuperpieceInterface {
     public Bishop(Position position, Color color) { super(position, color); }
 
     private Bishop(Bishop b) { super(b.getPosition(), b.getColor()); }

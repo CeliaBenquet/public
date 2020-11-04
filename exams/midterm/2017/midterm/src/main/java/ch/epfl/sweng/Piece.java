@@ -17,6 +17,7 @@ public abstract class Piece {
         this.position = position;
     }
 
+
     /**
      * a method overridden by each piece kind to check if a movement is valid. Since the destination
      * is already checked for being within the board and not equal to the piece's current position,
@@ -44,7 +45,7 @@ public abstract class Piece {
 
         Position.Offset offset = getPosition().offsetTo(destination);
 
-        if (!offset.isZero())
+        if (offset.isZero())
             throw new InvalidMoveException("A no-op move issued");
 
         if (!isPieceMovementValid(offset))

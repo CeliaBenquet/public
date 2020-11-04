@@ -1,5 +1,7 @@
 package ch.epfl.sweng.tests;
 
+import org.junit.Test;
+
 import ch.epfl.sweng.Bishop;
 import ch.epfl.sweng.Color;
 import ch.epfl.sweng.InvalidMoveException;
@@ -41,4 +43,11 @@ public class BishopTests extends PieceTests<Bishop> {
     public void testIllegal() throws InvalidMoveException, InvalidPositionException {
         piece.moveTo('d', 5);
     }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testHorizontally() throws InvalidMoveException, InvalidPositionException {
+        piece.moveTo('d', 3);
+    }
+
+
 }

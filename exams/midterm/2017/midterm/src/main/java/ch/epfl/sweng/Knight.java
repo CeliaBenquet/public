@@ -7,7 +7,7 @@ package ch.epfl.sweng;
  * other. As a sanity check: this should amount to 8 total possible moves
  */
 
-public class Knight extends Piece {
+public class Knight extends Piece implements SuperpieceInterface{
     public Knight(Position position, Color color) {
         super(position, color);
     }

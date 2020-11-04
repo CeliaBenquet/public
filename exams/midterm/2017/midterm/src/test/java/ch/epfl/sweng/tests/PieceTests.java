@@ -68,4 +68,5 @@ public abstract class PieceTests<P extends Piece> {
      */
     @Test(expected = InvalidMoveException.class)
     public abstract void testIllegal() throws InvalidMoveException, InvalidPositionException;
+
 }

@@ -12,6 +12,7 @@ dependencies {
     testCompile 'org.hamcrest:hamcrest-library:1.3'
 }
 
+
 test {
     ignoreFailures = true
     maxHeapSize = "8g"
