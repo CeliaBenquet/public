@@ -6,7 +6,10 @@ import ch.epfl.sweng.Color;
 import ch.epfl.sweng.InvalidMoveException;
 import ch.epfl.sweng.InvalidPositionException;
 import ch.epfl.sweng.Pawn;
+import ch.epfl.sweng.PieceType;
 import ch.epfl.sweng.Position;
+import ch.epfl.sweng.Queen;
+import ch.epfl.sweng.Superpiece;
 
 import static org.junit.Assert.assertEquals;
 
@@ -56,6 +59,15 @@ public class PawnTests extends PieceTests<Pawn> {
         pieceWhite.moveTo('d', 6);
     }
 
+    @Test
+    public void testPromotion() throws InvalidMoveException, InvalidPositionException {
+        pieceWhite.moveTo('d', 5);
+        pieceWhite.moveTo('d', 6);
+        pieceWhite.moveTo('d', 7);
+        pieceWhite.moveTo('d', 8);
+        Superpiece superpiece = pieceWhite.promote(PieceType.QUEEN);
+        assertEquals(superpiece.getPosition(), pieceWhite.getPosition());
+    }
 
 
 

@@ -14,17 +14,17 @@ The answer choices are provided as `[ ]`.  You should change each one to `[y]` f
 
 Which of the following is/are true about test-driven development (TDD)? 
 
-- [ ] TDD ensures there are no bugs in the code
-- [ ] TDD is synonymous with writing unit tests
-- [ ] Tests are the first thing a developer writes
-- [ ] The unit tests should not be changed once they have been written
+- [n] TDD ensures there are no bugs in the code
+- [n] TDD is synonymous with writing unit tests
+- [y] Tests are the first thing a developer writes
+- [y] The unit tests should not be changed once they have been written
 
 ### Question 2 [3 points]
 
 
 You have just started working as an intern in XYZ Corp. On your first day you start setting up your project: You need to clone the project's GitHub repo, create a new branch called `fix_color_scheme`, do the necessary changes to the code, commit all your changes, and push the branch to the remote repository. Select below the workflow(s) that you would follow. Remember that multiple answers may be possible.
 
-- [ ] Workflow 1 
+- [y] Workflow 1 
 ```
 mkdir WebApp && git clone git@github.com:XYZ/WebApp.git
 git checkout -b fix_color_scheme
@@ -33,7 +33,7 @@ git add .
 git commit -m "fix missing blue in the color palette, close #59"
 git push origin fix_color_scheme
 ```
-- [ ] Workflow 2
+- [n] Workflow 2
 ```
 git clone git@github.com:XYZ/WebApp.git
 git checkout fix_color_scheme
@@ -42,7 +42,7 @@ git add .
 git commit -m "fix missing blue in the color palette, close #59"
 git push origin fix_color_scheme
 ```
-- [ ] Workflow 3
+- [n] Workflow 3
 ```
 git clone git@github.com:XYZ/WebApp.git && cd WebApp/
 git checkout -b fix_color_scheme
@@ -50,7 +50,7 @@ git checkout -b fix_color_scheme
 git commit -am "fix missing blue in the color palette, close #59"
 git push origin fix_color_scheme
 ```
-- [ ] Workflow 4
+- [n] Workflow 4
 ```
 git clone git@github.com:XYZ/WebApp.git && cd WebApp/
 git branch fix_color_scheme
@@ -65,19 +65,19 @@ git push origin fix_color_scheme
 
 Your software company employs Scrum to develop their applications. On your second day there, you attend your first standup meeting. Which of the following statements is/are appropriate for you to make in this meeting?
 
-- [ ] "Yesterday, I cloned the `WebApp` repo and worked on a minor issue in the color scheme. I ran into a problem while cloning the repo. Mike helped me troubleshoot it. It was a problem related to privileges."
-- [ ] "Yesterday, I ran into a problem while I was cloning the `WebApp` repo (I am new and just got a new company-issued laptop). I searched StackOverflow but there were too many possibilities. Then, I talked to Jack, who didn't have time. He pointed me to Mike. Mike figured it must be because I am still not a collaborator, so he invited me. Everything works now. After I managed to finally clone the project, I worked on a very small portion of the task to change colors in the app."
-- [ ] "Today, I will work with Mike to design the new interface."
-- [ ] "Today, I will be getting a new laptop from the sysadmins. They told me they might be late, so I will check on them right away. I asked for a Mac. Is this good for us?"
+- [y] "Yesterday, I cloned the `WebApp` repo and worked on a minor issue in the color scheme. I ran into a problem while cloning the repo. Mike helped me troubleshoot it. It was a problem related to privileges."
+- [n] "Yesterday, I ran into a problem while I was cloning the `WebApp` repo (I am new and just got a new company-issued laptop). I searched StackOverflow but there were too many possibilities. Then, I talked to Jack, who didn't have time. He pointed me to Mike. Mike figured it must be because I am still not a collaborator, so he invited me. Everything works now. After I managed to finally clone the project, I worked on a very small portion of the task to change colors in the app."
+- [y] "Today, I will work with Mike to design the new interface."
+- [n] "Today, I will be getting a new laptop from the sysadmins. They told me they might be late, so I will check on them right away. I asked for a Mac. Is this good for us?"
 
 ### Question 4 [3 points]
 
 In Scrum, what should happen to your backlogs when your team discovers a major bug in the middle of a sprint?
 
-- [ ] The bug becomes an item in the sprint backlog and the team starts working on it right away.
-- [ ] The bug becomes an item in the sprint backlog. After the team finishes their other tasks for the sprint, if there is time, they fix the bug.
-- [ ] The bug becomes an item in the product backlog. It has the topmost priority.
-- [ ] The bug is communicated to the product owner, and she puts it in the product backlog and decides what priority it gets.
+- [y] The bug becomes an item in the sprint backlog and the team starts working on it right away.
+- [n] The bug becomes an item in the sprint backlog. After the team finishes their other tasks for the sprint, if there is time, they fix the bug.
+- [n] The bug becomes an item in the product backlog. It has the topmost priority.
+- [n] The bug is communicated to the product owner, and she puts it in the product backlog and decides what priority it gets.
 
 ### Question 5 [4 points]
 
@@ -85,32 +85,36 @@ During your internship with XYZ Corp., a client requests a feature that allows u
 
 Which design pattern would you use to connect your app to the service? There is exactly one correct choice.  Justify briefly your answer in the indicated space below the choices.
 
-- [ ] Adapter
-- [ ] Singleton
-- [ ] Decorator
-- [ ] Factory
+- [y] Adapter
+- [n] Singleton
+- [n] Decorator
+- [n] Factory
 
 - ___Justification:___
+
+Adapter allows to use the external service with the app by creating an adapter to get the Color correspondance back from the raw hexadecimal value.  
 
 ### Question 6 [3 points]
 
 An ex-employee of your software company wrote a library that creates different shapes. In your current project you are using the compiled code, with no access to the source code. You discover a bug in the library's behavior. Which of the following are potential solutions to this problem?
 
-- [ ] If it doesn't affect your code, you leave it as-is and file a bug
-- [ ] You re-write the library
-- [ ] You use the Decorator design pattern to correct the behavior
-- [ ] You write a test case that demonstrates the misbehavior
+- [y] If it doesn't affect your code, you leave it as-is and file a bug
+- [n] You re-write the library
+- [n] You use the Decorator design pattern to correct the behavior
+- [y] You write a test case that demonstrates the misbehavior
 
 ### Question 7 [4 points]
 
 You have been tasked to add some new functionality to the project. This functionality entails adding a new operation that computes the area of objects of types `Circle`, `Rectangle`, `Triangle`, and `Hexagon`. You know that soon you will have to add more operations to all of these classes. If you don't want to change every time the classes, which design pattern would you choose to add the functionality for computing the area? Please justify briefly your choice in the indicated space.
  
-- [ ] Decorator
-- [ ] Adaptor
-- [ ] Factory
-- [ ] Visitor
+- [n] Decorator
+- [n] Adaptor
+- [n] Factory
+- [y] Visitor
 
 - ___Justification:___
+Decorator permits to add functionalities to the classes but one would have to add it to each different classes as the area calculation would be different for each. Using the visitor, one construct one class which compute the area depending on the subtype of the shape without having to add it to each subclass (only accept methods in the subclasses.)
+The subclasses of the visitor can then be extended to implement other operations. 
 
 ### Question 8 [2 points]
 
@@ -128,6 +132,18 @@ private boolean isNotNull(Object o) {
 }
 ```
 
+
+
+```java
+public void printMessage(String message) {
+    if (message != null) {
+        System.out.println(message);
+    }
+}
+
+
+
+
 ### Question 9 [8 points]
 
 Transform the code below to use a "parametric singleton design pattern with lazy initialization," defined as follows:
@@ -138,9 +154,17 @@ Transform the code below to use a "parametric singleton design pattern with lazy
 ```java
 public class BoardGame {
     private int numberOfPlayers;
+    private static final Config instance = new BoardGame(numberOfPlayers); 
     
-    public BoardGame(int numberOfPlayers) {
+    private BoardGame(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+    }
+
+    private static getInstance(int numberOfPlayers) {
+        if (instance == null) {
+            instance = new BoardGame(NumberOfPlayers); 
+        }
+        return instance; 
     }
 }
 ```
@@ -195,6 +219,7 @@ public class SwEngMidtermResultsBoard  implements Observable {
 
     public void setMessage(String message) {
         this.message = message;
+        notifyObservers(); 
     }
 
     public String getMessage() {
@@ -204,6 +229,7 @@ public class SwEngMidtermResultsBoard  implements Observable {
     @Override
     public void addObserver(Observer observer) {
         System.out.println("Adding an observer!");
+        this.observers.add(observer); 
     }
 
     @Override
@@ -215,6 +241,7 @@ public class SwEngMidtermResultsBoard  implements Observable {
     public void notifyObservers() {
         for (Observer observer: this.observers) {
             System.out.println("Notification starts!");
+            observer.update(this); 
         }
     }
 }

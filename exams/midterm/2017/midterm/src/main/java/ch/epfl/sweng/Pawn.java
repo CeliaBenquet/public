@@ -2,6 +2,7 @@ package ch.epfl.sweng;
 
 import static ch.epfl.sweng.Color.BLACK;
 import static ch.epfl.sweng.Color.WHITE;
+import static ch.epfl.sweng.PieceType.QUEEN;
 
 /**
  * Class implementing the behaviour of the pawn piece in chess.
@@ -29,11 +30,16 @@ public class Pawn extends Piece {
         return new Pawn(this);
     }
 
-    public Superpiece promote(Queen queen) throws InvalidMoveException{
-        boolean whiteAtEnd = (this.getColor()== WHITE && this.getPosition().getHorizontal() == 8);
-        boolean blackAtEnd = (this.getColor() == BLACK && this.getPosition().getHorizontal() == 1);
+    public Superpiece promote(PieceType targetType) throws InvalidMoveException {
+        boolean whiteAtEnd = (this.getColor()== WHITE && this.getPosition().getVertical() == 8);
+        boolean blackAtEnd = (this.getColor() == BLACK && this.getPosition().getVertical() == 1);
         if (whiteAtEnd || blackAtEnd) {
-            return new Superpiece(queen);
+            switch (targetType) {
+                case QUEEN: return new Superpiece(new Queen(this.getPosition(), this.getColor()));
+                case ROOK: return new Superpiece(new Rook(this.getPosition(), this.getColor()));
+                case BISHOP: return new Superpiece(new Bishop(this.getPosition(), this.getColor()));
+                case KNIHT: return new Superpiece(new Knight(this.getPosition(), this.getColor()));
+            }
         }
         throw new InvalidMoveException();
     }

@@ -9,7 +9,7 @@ package ch.epfl.sweng;
  */
 
 
-public class Queen extends Piece implements SuperpieceInterface {
+public class Queen extends Piece {
     public Queen(Position position, Color color) {
             super(position, color);
         }
