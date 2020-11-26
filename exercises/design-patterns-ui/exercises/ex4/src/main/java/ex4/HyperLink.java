@@ -3,6 +3,7 @@ package ex4;
 public class HyperLink extends DocumentPart {
 
     private String URL;
+
     public HyperLink(String text, String URL) {
         super(text);
         this.URL = URL;
@@ -13,13 +14,9 @@ public class HyperLink extends DocumentPart {
     }
 
     @Override
-    public String toHTML() {
-        return String.format("<a href=\"%s\">%s</a>", URL, getText());
-    }
+    public String toHTML(DocumentVisitor visitor) { return visitor.toHTML(this);}
 
     @Override
-    public String toPlainText() {
-        return String.format("[%s](%s)", getText(), URL);
-    }
+    public String toPlainText(DocumentVisitor visitor) { return visitor.toPlainText(this); }
 
 }

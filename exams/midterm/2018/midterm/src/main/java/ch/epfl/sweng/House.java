@@ -48,8 +48,11 @@ public class House extends AddressUnit {
         }
 
         return this;
+    }
 
-
+    @Override
+    public void accept(AddressUnitVisitor visitor) {
+        visitor.visit(this);
     }
 
 

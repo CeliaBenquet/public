@@ -100,6 +100,18 @@ public class MinistryOfInformation {
     public void printAddresses(List<String> address)
         throws InvalidAddressException, AddressNotFoundException {
         // Put your code here.
-        throw new RuntimeException("Not implemented");
+        AddressUnit au = directory.findUnit(address);
+
+        String separator = ", ";
+
+        // common part for all the addresses
+        String prefix = "";
+        for (int i=0; i<address.size(); i++) {
+            prefix += address.get(i) + separator;
+        }
+        PrintAddressesVisitor visitor = new PrintAddressesVisitor(prefix, separator);
+        au.accept(visitor);
+
     }
+
 }

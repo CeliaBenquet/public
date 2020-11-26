@@ -7,13 +7,13 @@ public class PlainText extends DocumentPart {
     }
 
     @Override
-    public String toHTML() {
-        return getText();
+    public String toHTML(DocumentVisitor visitor) {
+        return visitor.toHTML(this);
     }
 
     @Override
-    public String toPlainText() {
-        return getText();
+    public String toPlainText(DocumentVisitor visitor) {
+        return visitor.toPlainText(this);
     }
 
 }

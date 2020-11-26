@@ -10,14 +10,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class LoanTest {
 
     @Test
-    public void testTermLoanNoPayments(){
-        Loan termLoan = new Loan(2.0,1,Date.from(Instant.now()));
+    public void testTermLoanNoPayments() {
+        Loan termLoan = Loan.createTermLoan(2.0, 1, Date.from(Instant.now()));
         assertNotNull(termLoan);
+        System.out.println("Test term loan");
     }
 
     @Test
     public void testRevolverLoan() {
-        Loan revolverLoan = new Loan(2.0,1.0,1,Date.from(Instant.now()), Date.from(Instant.now()));
+        Loan revolverLoan = Loan.createRevolverLoan(2.0, 1.0, 1, Date.from(Instant.now()), Date.from(Instant.now()));
         assertNotNull(revolverLoan);
+        System.out.println("Test revolver loan");
     }
+
 }

@@ -8,49 +8,51 @@ This file is named `Theory.md`. Provide the answers in this file and commit the 
 
 Choose zero, one, or more answers that are true of containment (as opposed to inheritance):
 
-[] Should be used when classes share common data but not behavior
+[y] Should be used when classes share common data but not behavior
 
-[] Should be used when classes share common behavior
+[n] Should be used when classes share common behavior
 
-[] Helps avoid excessive method forwarding
+[n] Helps avoid excessive method forwarding
 
-[] The base class controls the interface and provides its implementation
+[y] The base class controls the interface and provides its implementation
 
 ### Question 2 [2 points]
 
 What is(are) the relationship(s) between the `Factory` design pattern and `Abstract Factory` design pattern?
 
-[] `Abstract Factory` is a generalization of `Factory`
+[y] `Abstract Factory` is a generalization of `Factory`
 
-[] `Factory` is a generalization of `Abstract Factory`
+[n] `Factory` is a generalization of `Abstract Factory`
 
-[] `Abstract Factory` can make use of more than one `Factory`
+[y] `Abstract Factory` can make use of more than one `Factory`
 
-[] `Abstract Factory` and `Factory` are not related to each other, despite the similar name
+[n] `Abstract Factory` and `Factory` are not related to each other, despite the similar name
 
 ### Question 3 [3 points]
 
 If you were asked to write a caching system for a smartphone app that accesses a remote database, which design pattern would you use? Briefly explain your choice(s) on the same line as the choice(s).
 
-[] `Proxy`
+[y] `Proxy`
 
-[] `Decorator`
+[n] `Decorator`
 
-[] `Adapter`
+[n] `Adapter`
 
-[] `Composite`
+[n] `Composite`
+
+Proxy permits to delegate an action to remote object (such as reading the database) without the local objects knowing about the delegation. Permits to treat remote ressources as if they were local. 
 
 ### Question 4 [3 points]
 
 Consider the following types of projects; indicate for which ones you consider the _waterfall_ development model to be more suitable than _agile_ models. Briefly explain your choice(s) on the same line as the choice(s).
 
-[] One-off applications (e.g., an event guide, a kiosk app for a conference)
+[n] One-off applications (e.g., an event guide, a kiosk app for a conference) => requirement not fully known at the beggining
 
-[] Apps that require a short time to market (e.g., a flash game, a small company's website)
+[n] Apps that require a short time to market (e.g., a flash game, a small company's website) => not all requirements known + loss of time at the beggining + client part of the process 
 
-[] Safety-critical apps (e.g., airplane firmware, nuclear plant control)
+[y] Safety-critical apps (e.g., airplane firmware, nuclear plant control) => requirements should be well defined from the start !! more structure and enforces stability of requirements + strong control ocer the development process. 
 
-[] Large-scale consumer apps (e.g., social network, messenger app)
+[n] Large-scale consumer apps (e.g., social network, messenger app)
 
 
 ### Question 5 [12 points]
@@ -71,7 +73,8 @@ public class CharacterSet {
 The following implementation of a stack may sometimes throw `java.lang.ArrayIndexOutOfBoundsException` exceptions. To solve this question, please provide in the code below the class invariant, preconditions, and postconditions for methods `pop` and `push` that prevent these exceptions from arising, and thus make the code valid. You should **provide replacements for the 5 placeholders `“<write your code here(a/b/c/d/e)>”`**. You are not permitted to reference private class members in the pre- and post-condtions.
 
 ```java
-@Invariant("<write your code here(a)>")
+@Invariant("numberOfElements<=capacity
+&& numberOfElements >= 0 && contents != null")
 
 class Stack {
     private int capacity;
@@ -92,15 +95,15 @@ class Stack {
         return numberOfElements == capacity;
     }
 
-    @Requires("<write your code here(b)>")
-    @Ensures("<write your code here(c)>")
+    @Requires("numberOfElement > 0 ")
+    @Ensures("numberOfElement >= 0")
     public int pop() {
         numberOfElements -= 1;
         return contents[numberOfElements];
     }
 
-    @Requires("<write your code here(d)>")
-    @Ensures("<write your code here(e)>")
+    @Requires("numberOfElement < capacity")
+    @Ensures("numberOfElement <= capacity")
     public void push(int x) {
         contents[numberOfElements] = x;
         numberOfElements += 1;
@@ -125,6 +128,10 @@ Assuming the modules implement independent features, and that bugs in one module
 
 **Answer:**
 
+bugCount ∝ n/k statements (per module)
+debugTime ∝ n/k * bugCount ∝ (n/k)² => reduction of the debug time by k².
+
+
 ### Question 7 [13 points]
 
 Consider the simple Reverse Polish Notation Calculator shown below. The private methods `add()`, `subtract()`, and `factorial()` perform the corresponding operation by popping values from the `OperandStack` and executing the required algorithm. **You do not need to understand the inner workings of the algorithms in order to answer this question**.
@@ -136,20 +143,18 @@ In the code below, use the Strategy pattern to refactor the `String operatorName
 Edit the code in place.
 
 ```java
+
 public class RpnCalculator {
     // private class fields
     private OperandStack<Integer> values;
     ...
 
     public void execute(String operatorName) {
-        if ("+".equals(operatorName)) {
-            add();
-        } else if ("-".equals(operatorName)) {
-            subtract();
-        } else if ("!".equals(operatorName)) {
-            factorial();
-        } else {
-            throw new NoSuchOperator();
+        switch (operatorName) {
+            case "+": add(); 
+            case "-": substract(); 
+            case "!": factorial(); 
+            default: throw new NoSuchOperator(); 
         }
     }
 

@@ -22,16 +22,16 @@ public class SwengHttpClientFactory {
 
 Which of the following statements are true regarding this design? Select all that apply.
 
-- [ ] This is a standard example of the original GOF factory
-- [ ] This is a standard example of the static factory method
-- [ ] This is a standard example of Singleton
-- [ ] The class allows switching the concrete HttpClient returned
-- [ ] The SwengHttpClientFactory decides what type of HttpClient to return
+- [n] This is a standard example of the original GOF factory
+- [n] This is a standard example of the static factory method
+- [n] This is a standard example of Singleton
+- [y] The class allows switching the concrete HttpClient returned
+- [n] The SwengHttpClientFactory decides what type of HttpClient to return
 
 Suppose you implement an iPhone game that uses [AirPlay](http://en.wikipedia.org/wiki/AirPlay) mirroring to display the image both on the phone's screen and on an external display. Thus, your code needs to manage two screens. Is the display manager of your application a good use case for the Singleton Design Pattern?
 
-- [ ] Yes
-- [ ] No
+- [y] Yes
+- [n] No
 
 ## Inheritance vs Proxy vs Adapter
 
@@ -39,10 +39,10 @@ Imagine you're writing an application that analyzes Facebook users' messages usi
 
 Of the following four options, which is the one most effective way of building the desired application?
 
-- [ ] Write an `NLPFacebookPost` class that subclasses `FacebookPost` and also implements `NLPDocument`'s interface, then change the NLP library to accept `NLPFacebookPost` objects instead of `NLPDocument` objects.
-- [ ] Write a `FacebookPostNLPDocumentAdapter` class that adapts the interface of `FacebookPost` to the `NLPDocument` interface
-- [ ] Write an `NLPDocumentFacebookPostAdapter` class that adapts the interface of `NLPDocument` to the `FacebookPost` interface
-- [ ] Use the Proxy design pattern to make `FacebookPost` objects behave like `NLPDocument` objects
+- [n] Write an `NLPFacebookPost` class that subclasses `FacebookPost` and also implements `NLPDocument`'s interface, then change the NLP library to accept `NLPFacebookPost` objects instead of `NLPDocument` objects.
+- [y] Write a `FacebookPostNLPDocumentAdapter` class that adapts the interface of `FacebookPost` to the `NLPDocument` interface
+- [n] Write an `NLPDocumentFacebookPostAdapter` class that adapts the interface of `NLPDocument` to the `FacebookPost` interface
+- [n] Use the Proxy design pattern to make `FacebookPost` objects behave like `NLPDocument` objects
 
 ## MVC
 
@@ -79,7 +79,7 @@ class WebApplication {
 
 Which of the following statements is (are) true?
 
-- [ ] `StudentsDatabase` is the model, `StudentsManager` is the controller, and `WebApplication` is the the view.
-- [ ] `StudentsDatabase` is the model, `StudentsManager` is the view, and `WebApplication` is the controller.
-- [ ] `StudentsManager` is the model, `StudentsDatabase` is the view, and `StudentsManager` is the controller.
-- [ ] This is not MVC, because `StudentsManager` must use a listener to be notified when the database changes.
+- [n] `StudentsDatabase` is the model, `StudentsManager` is the controller, and `WebApplication` is the the view.
+- [y] `StudentsDatabase` is the model, `StudentsManager` is the view, and `WebApplication` is the controller.
+- [n] `StudentsManager` is the model, `StudentsDatabase` is the view, and `StudentsManager` is the controller.
+- [n] This is not MVC, because `StudentsManager` must use a listener to be notified when the database changes.

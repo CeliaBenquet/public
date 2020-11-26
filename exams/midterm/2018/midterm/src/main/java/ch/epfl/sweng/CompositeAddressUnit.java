@@ -1,5 +1,6 @@
 package ch.epfl.sweng;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class CompositeAddressUnit extends AddressUnit {
      */
     private Map<String, AddressUnit> subUnits;
 
+
     public CompositeAddressUnit(String name) {
         super(name);
         this.subUnits = new HashMap<String, AddressUnit>();
@@ -34,10 +36,14 @@ public class CompositeAddressUnit extends AddressUnit {
         return subUnits.get(name);
     }
 
+    public final Collection<AddressUnit> getSubUnits() {
+        return subUnits.values();
+    }
+
     public int getPopulation() {
         int population = 0;
-        for (Map.Entry<String, AddressUnit> entry : subUnits.entrySet()) {
-            population += entry.getValue().getPopulation();
+        for (AddressUnit subUnit: subUnits.values()) {
+            population += subUnit.getPopulation();
         }
         return population;
     }
@@ -98,4 +104,10 @@ public class CompositeAddressUnit extends AddressUnit {
             return subUnit.findUnit(address.subList(1, address.size()));
         }
     }
+
+    @Override
+    public void accept(AddressUnitVisitor visitor) {
+        visitor.visit(this);
+    }
+
 }

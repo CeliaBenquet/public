@@ -15,7 +15,7 @@ public class Rook extends Piece {
 
     @Override
     protected boolean isPieceMovementValid(Position.Offset offset) {
-        return (offset.horizontal != 0) || (offset.vertical != 0);
+        return (offset.horizontal == 0) || (offset.vertical == 0);
     }
 
     @Override

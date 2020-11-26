@@ -15,15 +15,15 @@ public class App {
         r.color("red");
         t.color("pink");
 
-        // Shape innerShape = new ShapeComposite();
-        // innerShape.add(new Triangle());
-        // innerShape.add(new Triangle());
-        //
-        // Shape shape = new ShapeComposite();
-        // shape.add(new Circle());
-        // shape.add(new Rectangle());
-        // shape.add(innerShape);
-        //
-        // shape.color("black");
+        Shape innerShape = new ShapeComposite();
+        innerShape.add(new Triangle());
+        innerShape.add(new Triangle());
+
+        Shape shape = new ShapeComposite();
+        shape.add(new Circle());
+        shape.add(new Rectangle());
+        shape.add(innerShape);
+
+        shape.color("black");
     }
 }

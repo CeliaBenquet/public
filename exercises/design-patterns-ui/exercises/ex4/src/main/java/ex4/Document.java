@@ -17,16 +17,18 @@ public class Document {
 
     public String toHTML() {
         StringBuffer result = new StringBuffer();
+        DocumentVisitor visitor = new DocumentVisitor();
         for (DocumentPart part: parts) {
-            result.append(part.toHTML());
+            result.append(part.toHTML(visitor));
         }
         return result.toString();
     }
 
     public String toPlainText() {
         StringBuffer result = new StringBuffer();
+        DocumentVisitor visitor = new DocumentVisitor();
         for (DocumentPart part: parts) {
-            result.append(part.toPlainText());
+            result.append(part.toPlainText(visitor));
         }
         return result.toString();
     }

@@ -17,7 +17,7 @@ Which of the following is/are true about test-driven development (TDD)?
 - [n] TDD ensures there are no bugs in the code
 - [n] TDD is synonymous with writing unit tests
 - [y] Tests are the first thing a developer writes
-- [y] The unit tests should not be changed once they have been written
+- [y] The unit tests should not be changed once they have been written => no they can be changed 
 
 ### Question 2 [3 points]
 
@@ -74,10 +74,12 @@ Your software company employs Scrum to develop their applications. On your secon
 
 In Scrum, what should happen to your backlogs when your team discovers a major bug in the middle of a sprint?
 
-- [y] The bug becomes an item in the sprint backlog and the team starts working on it right away.
+- [n] The bug becomes an item in the sprint backlog and the team starts working on it right away.
 - [n] The bug becomes an item in the sprint backlog. After the team finishes their other tasks for the sprint, if there is time, they fix the bug.
 - [n] The bug becomes an item in the product backlog. It has the topmost priority.
-- [n] The bug is communicated to the product owner, and she puts it in the product backlog and decides what priority it gets.
+- [y] The bug is communicated to the product owner, and she puts it in the product backlog and decides what priority it gets.
+
+=> if bug : report it to product owner and do nothing on it while decision taken. BECAUSE major bug. work exceeed scope of current sprint. Minor bugs can be fixed as part of the current sprint tho
 
 ### Question 5 [4 points]
 
@@ -93,15 +95,16 @@ Which design pattern would you use to connect your app to the service? There is 
 - ___Justification:___
 
 Adapter allows to use the external service with the app by creating an adapter to get the Color correspondance back from the raw hexadecimal value.  
+Transform app output to the need value for our app. Wraps the service's interface and transforms it into the interface the the app expects.
 
 ### Question 6 [3 points]
 
 An ex-employee of your software company wrote a library that creates different shapes. In your current project you are using the compiled code, with no access to the source code. You discover a bug in the library's behavior. Which of the following are potential solutions to this problem?
 
 - [y] If it doesn't affect your code, you leave it as-is and file a bug
-- [n] You re-write the library
-- [n] You use the Decorator design pattern to correct the behavior
-- [y] You write a test case that demonstrates the misbehavior
+- [y] You re-write the library => if affect code need to change the behavior 
+- [y] You use the Decorator design pattern to correct the behavior => layer on top of the library to correct the bad behavior
+- [n] You write a test case that demonstrates the misbehavior => doesn't solve the problem. 
 
 ### Question 7 [4 points]
 
@@ -115,6 +118,9 @@ You have been tasked to add some new functionality to the project. This function
 - ___Justification:___
 Decorator permits to add functionalities to the classes but one would have to add it to each different classes as the area calculation would be different for each. Using the visitor, one construct one class which compute the area depending on the subtype of the shape without having to add it to each subclass (only accept methods in the subclasses.)
 The subclasses of the visitor can then be extended to implement other operations. 
+
+not change the implementation of the object : visitor to implement each new functionnality in a separate class ShapeVisitor interface + each shape object has an accept method 
+rely on double dispatch to dynamically add future functionality
 
 ### Question 8 [2 points]
 
@@ -154,17 +160,18 @@ Transform the code below to use a "parametric singleton design pattern with lazy
 ```java
 public class BoardGame {
     private int numberOfPlayers;
-    private static final Config instance = new BoardGame(numberOfPlayers); 
+    private static Map<Integer, BoardGame> instances = new HashMap<Integer, BoardGame>(); 
     
     private BoardGame(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+        
     }
 
-    private static getInstance(int numberOfPlayers) {
-        if (instance == null) {
-            instance = new BoardGame(NumberOfPlayers); 
-        }
-        return instance; 
+    private static synchronized BoardGame getInstance(int numberOfPlayers) {
+        if (instances.get(numberOfPlayers) == null) {
+            this.instances.put(numberOfPlayers, new BoardGame()); 
+        } 
+        return instances.get(numberOfPlayers);
     }
 }
 ```
@@ -219,7 +226,7 @@ public class SwEngMidtermResultsBoard  implements Observable {
 
     public void setMessage(String message) {
         this.message = message;
-        notifyObservers(); 
+        this.notifyObservers(); 
     }
 
     public String getMessage() {

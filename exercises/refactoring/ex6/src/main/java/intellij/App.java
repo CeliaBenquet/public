@@ -6,8 +6,8 @@ package intellij;
 public class App {
 
     public static void main(String[] args) {
-        BadClassName myClass = new BadClassName("oh hey");
-        System.out.println(myClass.longAndComplicatedMethod());
-        myClass.multiplesOf2();
+        GoodClass myClass = new GoodClass("oh hey");
+        System.out.println(myClass.modifyName());
+        myClass.multiplesOfA(2);
     }
 }

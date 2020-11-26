@@ -17,18 +17,21 @@ The product owner now wants to add new kinds of weapons, such as laser guns and 
 
 Which one of the following design patterns is best suited to efficiently maintaining the combat game codebase? Justify your answer in 1-2 sentences. 
 
-- [ ] Adapter
-- [ ] Proxy
-- [ ] Composite
-- [ ] Decorator 
+- [n] Adapter
+- [n] Proxy
+- [n] Composite
+- [y] Decorator 
+
+Decorator pattern permits to add functionnalities to a class, such as all kind of extra weapons. 
+Useful to extend functionality of some objects of a class. Decorate soldiers with weapons, instead of creating separate classes for each combination.
 
 ### Question 2 [3 points]
 Which of the following is/are true:
 
-- [ ] In TDD, a newly written test must always fail
-- [ ] In TDD, a newly written test may pass but is likely to fail
-- [ ] The Decorator DP is suitable when we want to extend the functionality of **all** object instances of a particular class
-- [ ] The Decorator DP is suitable when we want to extend the functionality of **some** object instances of a particular class
+- [n] In TDD, a newly written test must always fail
+- [y] In TDD, a newly written test may pass but is likely to fail => newly written test must ALWAYS fail 
+- [n] The Decorator DP is suitable when we want to extend the functionality of **all** object instances of a particular class
+- [y] The Decorator DP is suitable when we want to extend the functionality of **some** object instances of a particular class
 
 
 ### Question 3 [6 points]
@@ -63,16 +66,21 @@ public class Celebrity implements Observable {
     @Override
     public void addObserver(Observer observer) {
         // your code here
+        followers.add(oberserver); 
     }
 
     @Override
     public void removeObserver(Observer observer) {
         // your code here
+        followers.remove(obersever); 
     }
 
     @Override
     public void notifyObservers() {
         // your code here
+        for (final Observer observer: followers) {
+            observer.update(this); 
+        }
     }
 
     public List<String> getTweets() {
@@ -82,6 +90,7 @@ public class Celebrity implements Observable {
     public void addTweet(String tweet) {
         this.tweets.add(tweet);
         // your code here
+        notifyObservers(); 
     }
 }
 ```
@@ -93,6 +102,7 @@ public class Follower implements Observer {
     public void update(Observable observable) {
         Celebrity celebrity = (Celebrity) observable;
         // your code here
+        System.out(celebrity.geTweets.get(celebrity.getTweets().size()-1)); 
     }
 }
 ```
@@ -100,18 +110,18 @@ public class Follower implements Observer {
 ### Question 4 [3 points]
 Which of the following constructs may violate the single-exit principle of structured programming:
 
-- [ ] Unconditional jump (`goto`)
-- [ ] Selection (`if` statement)
-- [ ] Loops (`while`, `for`)
-- [ ] Exceptions (`throw`)
+- [n] Unconditional jump (`goto`) => yes 
+- [y] Selection (`if` statement) => no 
+- [y] Loops (`while`, `for`) => no
+- [y] Exceptions (`throw`)
 
 ### Question 5 [3 points]
 Which of the following are true about Scrum:
 
-- [ ] Scrum should be used when all the requirements are known before development
-- [ ] Scrum enables the dev team to interact frequently and receive feedback often from the customer
-- [ ] The Scrum master is a manager who decides which tasks are assigned to the developers
-- [ ] The product owner is not allowed to change the sprint backlog
+- [n] Scrum should be used when all the requirements are known before development
+- [y] Scrum enables the dev team to interact frequently and receive feedback often from the customer
+- [n] The Scrum master is a manager who decides which tasks are assigned to the developers
+- [y] The product owner is not allowed to change the sprint backlog
 
 ### Question 6 [5 points]
 The following code snippet describes a typed temperature state which is stored and constructed from Celsius degrees.
@@ -133,6 +143,14 @@ public class Temperature {
     public Double get() {
         return this.celsius;
     }
+
+    public static Temperature fromFahrenheit (double fahrenheit) {
+        return new Temperature ((fahrenheit - 32)* 5.0/9.0); 
+    }
+
+    
+
+    
 }
 ```
 
@@ -140,14 +158,17 @@ If you used a design pattern, specify its name and justify briefly (one sentence
 
 ***(Your answer here)***
 
+Factory, control more ways to create the object. public + static : need to be able to call them without any object instanciation: return a Temperature object. 
+Additional control over the object creation + cannot overload the constructor with same argument type.
+
 
 ### Question 7 [3 points]
 Which of the following are good Git commit messages:
 
-- [ ] "I fixed an annoying bug in the Account class."
-- [ ] "Add Transaction class to model money transfer logic"
-- [ ] "Refactor database as singleton as it should not be instantiated multiple times, the instance is spawned lazily at first use and the getInstance factory must be called to use it"
-- [ ] "A bug fix"
+- [n] "I fixed an annoying bug in the Account class."
+- [y] "Add Transaction class to model money transfer logic"
+- [n] "Refactor database as singleton as it should not be instantiated multiple times, the instance is spawned lazily at first use and the getInstance factory must be called to use it"
+- [n] "A bug fix"
 
 
 ### Question 8 [5 points]
@@ -180,36 +201,49 @@ The whole codebase will then use the function defined in this class to retrieve 
 Modify the following code in place by replacing the two instances of ???):
 
 ```java
-public class MasterCatAdapter implements ??? {
+public class MasterCatAdapter implements CreditCardService {
     MasterCatService mastercat = new MasterCatService();
 
-    ???
+    @Override 
+    public Optional<Invoice> getMonthlyInvoice() {
+        if (mastercat.getMonthlyInvoice() == null) {
+            return  optional.empty(); 
+        }
+
+        else {
+            return Optional.of(mastercat.getMonthlyInvoice());
+        }
+    }
 }
 ```
 
 ### Question 9 [3 points]
 Which workflow represents the TDD approach:
 
-- [ ] feature request; feature implementation; test for the feature
-- [ ] test for the feature; feature request; feature implementation
-- [ ] feature request; test for the feature; feature implementation
-- [ ] feature implementation; test for the feature; feature request 
-- [ ] feature implementation; feature request; test for the feature
+- [n] feature request; feature implementation; test for the feature
+- [n] test for the feature; feature request; feature implementation
+- [y] feature request; test for the feature; feature implementation
+- [n] feature implementation; test for the feature; feature request 
+- [n] feature implementation; feature request; test for the feature
 
 
 ### Question 10 [3 points]
 Which of the following meetings require that a product owner be present?
 
-- [ ] Daily scrum meeting
-- [ ] Sprint review
-- [ ] Sprint retrospective
-- [ ] Sprint planning
+- [n] Daily scrum meeting
+- [y] Sprint review
+- [y] Sprint retrospective
+- [y] Sprint planning
 
 ### Question 11 [3 points]
 You have to design a class `Workout` which is implemented by `TricepsWorkout`. `TricepsWorkout` consists of objects of type `TricepsDips`,`SeatedDumbbellPress`, `CloseGripBarbellBenchPress`, and `VBarPulldown`, all of which are `Workout` objects themselves. 
 Which one of the following design patterns is best suited to efficiently designing this class? Justify your answer in 1-2 sentences. 
 
-- [ ] Adapter
-- [ ] Proxy
-- [ ] Composite
-- [ ] Decorator 
+- [n] Adapter
+- [n] Proxy
+- [y] Composite
+- [n] Decorator 
+
+Tree like interface : handeling of groups of items => uniform fashion
+
+all objects categorized as part od the same type and some composed of others => tree 

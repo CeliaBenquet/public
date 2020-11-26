@@ -5,8 +5,4 @@ public class Squat extends Exercise {
         name = "squat";
     }
 
-    public boolean requiresWeights() {
-        return false;
-    }
-
 }

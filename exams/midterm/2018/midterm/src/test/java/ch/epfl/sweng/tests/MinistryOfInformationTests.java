@@ -186,7 +186,7 @@ public class MinistryOfInformationTests {
                                                             "Port Glaud")));
     }
 
-    @Ignore("Remove this line when doing the Broadcast problem")
+    //@Ignore("Remove this line when doing the Broadcast problem")
     @Test
     public void testPrintAddresses()
         throws InvalidAddressException, AddressNotFoundException {
@@ -214,6 +214,7 @@ public class MinistryOfInformationTests {
 
         for(House destination : dieulandDestinations) {
             String correctMessage = "Seychelles, Dream Island, Dieuland, " + destination.getName();
+            System.out.println(outputMessage);
             assertTrue(outputMessage.contains(correctMessage));
         }
 

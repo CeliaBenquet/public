@@ -9,7 +9,7 @@ package ch.epfl.sweng;
  * given prefix.
  */
 
-public class PrintAddressesVisitor implements AddressUnitVisitor {
+public class PrintAddressesVisitor implements AddressUnitVisitor{
 
 	/* Each addresses should be printed on a new line with a comma and space
      between different divisions */
@@ -18,11 +18,28 @@ public class PrintAddressesVisitor implements AddressUnitVisitor {
 	   Seychelles, Mahe, Port Glaud, 432
 	*/
 
+	String prefix;
+	String separator;
+
+	public PrintAddressesVisitor(String prefix, String separator) {
+		this.prefix = prefix;
+		this.separator = separator;
+	}
+
 	public void visit(CompositeAddressUnit unit) {
 		/* Your code here */
+
+		String prevPrefix = prefix;
+		this.prefix = this.prefix + unit.getName() + separator;
+
+		for (AddressUnit i: unit.getSubUnits()) {
+			i.accept(this);
+		}
+		this.prefix = prevPrefix;
 	}
 
 	public void visit(House house) {
 		/* Your code here */
+		System.out.println(this.prefix + house.getName());
 	}
 }

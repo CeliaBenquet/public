@@ -11,28 +11,12 @@ import java.util.Date;
 public class Loan{
 
     CapitalStrategy capitalStrategy;
-    double commitment;
+    static double commitment;
     double outstanding;
-    int customerRating;
-    Date maturity;
+    //int customerRating;
+    static Date maturity;
     Date expiry;
-    int riskTaking;
-
-    public Loan(double commitment, int riskTaking, Date maturity){
-        this(commitment, 0.00, riskTaking, maturity, null);
-    }
-
-    public Loan(double commitment, int riskTaking, Date maturity, Date expiry){
-        this(commitment, 0.00, riskTaking, maturity, expiry);
-    }
-
-    public Loan(double commitment, double outstanding, int customerRating, Date maturity, Date expiry){
-        this(null, commitment, outstanding, customerRating, maturity, expiry);
-    }
-
-    public Loan(CapitalStrategy capitalStrategy, double commitment, int riskTaking, Date maturity, Date expiry){
-        this(capitalStrategy, commitment, 0.00, riskTaking, maturity, expiry);
-    }
+    static int riskTaking;
 
     public Loan(CapitalStrategy capitalStrategy, double commitment, double outstanding, int riskTaking, Date maturity, Date expiry){
         this.commitment = commitment;
@@ -51,6 +35,24 @@ public class Loan{
                 this.capitalStrategy = new CapitalStrategyRCTL();
         }
     }
+
+    public static Loan createTermLoan(double commitment, int riskTaking, Date maturity){
+        return new Loan(null, commitment, 0.00, riskTaking, maturity, null);
+    }
+
+    public static Loan createRevolverLoan(double commitment, double outstanding, int customerRating, Date maturity, Date expiry){
+        return new Loan(null, commitment, 0.00, riskTaking, maturity, null);
+    }
+
+    // Constructor for Revolver loan
+    public Loan createRevolverLoan(double commitment, int riskTaking, Date maturity, Date expiry){
+        return new Loan(null, commitment, 0.00, riskTaking, maturity, expiry);
+    }
+
+    public Loan createRCTLLoan(CapitalStrategy capitalStrategy, double commitment, int riskTaking, Date maturity, Date expiry){
+        return new Loan(null, commitment, 0.00, riskTaking, maturity, null);
+    }
+
 }
 
 // The following classes are for illustration purpose of this exercise only. Don't do this.
@@ -59,14 +61,18 @@ class CapitalStrategy {
 }
 
 class CapitalStrategyTermLoan extends CapitalStrategy{
+    // fully paid by the maturity date
 
 }
 
 class CapitalStrategyRevolver extends CapitalStrategy{
+    // revolving credit : spending limit and expiry date
+
     
 }
 
 class CapitalStrategyRCTL extends CapitalStrategy{
+    // revolver that transform into a term loan when the revolver expires
 
 }
 

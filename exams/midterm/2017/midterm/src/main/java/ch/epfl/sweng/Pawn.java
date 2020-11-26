@@ -39,6 +39,7 @@ public class Pawn extends Piece {
                 case ROOK: return new Superpiece(new Rook(this.getPosition(), this.getColor()));
                 case BISHOP: return new Superpiece(new Bishop(this.getPosition(), this.getColor()));
                 case KNIHT: return new Superpiece(new Knight(this.getPosition(), this.getColor()));
+                default: throw new IllegalArgumentException("wrong promotion specification");
             }
         }
         throw new InvalidMoveException();

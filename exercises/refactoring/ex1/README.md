@@ -23,6 +23,7 @@ public class Player {
     // other methods
 }
 ```
+Too much attributes for Weapon : could create a Weapon class. 
 
 ## Exercise 1.2
 
@@ -51,6 +52,8 @@ public static double[] normalize(double[] data) {
 }
 ```
 
+Should implement the other parts as methods for mean and standard deviation.
+
 ## Exercise 1.3
 
 Consider this method that computes the price of an order. What's wrong ?
@@ -63,6 +66,7 @@ double price() {
     Math.min(quantity * itemPrice * 0.1, 100.0);
 }
 ```
+not clear : should separate the different elements of the calculation.  
 
 ## Exercise 1.4
 
@@ -102,6 +106,8 @@ public class Human {
     }
 }
 ```
+
+No need to access all the attributes from phone: should do it directly in Phone : no need for Human. 
 
 * * *
 

@@ -67,5 +67,6 @@ public abstract class AddressUnit {
     }
 
     public abstract int getPopulation();
+    public abstract void accept(AddressUnitVisitor visitor);
 
 }

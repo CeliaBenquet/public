@@ -19,20 +19,16 @@ public class Hitparade {
 
     private static final int N = 3;
 
+    private static TopNPrinter<Song> printer = new TopNPrinter<>();
+
     // returns the top N most popular songs
     private static List<Song> getMostPopularSongs() {
-        List<Song> allSongs = new ArrayList<>(songs);
-        Collections.sort(allSongs);
-        return allSongs.subList(0, N);
+        return printer.getMostPopularObjects(songs,N);
     }
 
     // prints the top N most popular songs in a nice way
     public static void prettyPrintMostPopularSongs() {
-        List<Song> topSongs = getMostPopularSongs();
-        System.out.println("====TOP SONGS====");
-        int i = 1;
-        for (Song s : topSongs)
-            System.out.println(i++ + ") " + s);
+       printer.prettyPrintMostPopularObjects(songs,N, "SONGS");
     }
 
     // other methods like:

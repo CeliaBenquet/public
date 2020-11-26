@@ -7,13 +7,13 @@ public class BoldText extends DocumentPart {
     }
 
     @Override
-    public String toHTML() {
-        return String.format("<b>%s</b>", getText());
+    public String toHTML(DocumentVisitor visitor) {
+        return visitor.toHTML(this);
     }
 
     @Override
-    public String toPlainText() {
-        return String.format("**%s**", getText());
+    public String toPlainText(DocumentVisitor visitor) {
+        return visitor.toPlainText(this);
     }
 
 }

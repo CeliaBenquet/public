@@ -12,6 +12,17 @@ abstract public class Pizza {
 		return name;
 	}
 
+	public static Pizza orderPizza(String name) {
+		PizzaFactory pizzaFactory = new PizzaFactory();
+		Pizza pizza = PizzaFactory.get(name);
+
+		pizza.prepare();
+		pizza.bake();
+		pizza.cut();
+		pizza.box();
+		return pizza;
+	}
+
 	public void prepare() {
 		System.out.println("Preparing " + name);
 	}

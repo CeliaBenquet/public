@@ -10,34 +10,36 @@ Note that parts of the code are omitted as they aren't relevant for the exercise
 ```java
 public class Player {
     private int hitPoints;
-    private String weaponName;
-    private int weaponDamage;
-    private int weaponRange;
-    private boolean isRangedWeapon;
+    private Weapon weapon; 
+
     
-    public Player(int initialHitPoints, String weaponName,
-        int weaponDamage, int weaponRange, boolean isRangedWeapon) {
+    public Player(int initialHitPoints, Weapon weapon) {
         // initialize attributes
     }
     // other methods
 }
+
+public class Weapon {
+    private String weaponName;
+    private int weaponDamage;
+    private int weaponRange;
+    private boolean isRangedWeapon;
+
+    public Weapon(String weaponName,
+        int weaponDamage, int weaponRange, boolean isRangedWeapon) {
+        // initialize attributes 
+    }
+}
 ```
+
+Large class, data clumps ==> Extract class.
 
 ## Exercise 2.2
 
 ```java
 public static double[] normalize(double[] data) {
-    // compute mean
-    double sum = 0;
-    for (double d : data)
-        sum += d;
-    double mean = sum / data.length;
-    
-    // compute standart deviation
-    double acc = 0;
-    for (double d : data)
-        acc += (d - mean) * (d - mean);
-    double std = Math.sqrt(acc / data.length);
+    double mean = mean(data); 
+    double std = std(data); 
     
     // normalize
     double[] out = new double[data.length];
@@ -46,18 +48,41 @@ public static double[] normalize(double[] data) {
     
     return out;
 }
+
+public static double mean(double[] data) {
+    // compute mean
+    double sum = 0;
+    for (double d : data)
+        sum += d;
+    return mean = sum / data.length;
+}
+
+public static double std(double[] data) {
+    // compute standart deviation
+    double acc = 0;
+    for (double d : data)
+        acc += (d - mean) * (d - mean);
+    return Math.sqrt(acc / data.length);
+}
+
 ```
+
+Commments ==> Extract methods. 
 
 ## Exercise 2.3
 
 ```java
 double price() {
   // Price consists of: base price - discount + shipping cost
-  return quantity * itemPrice -
-    Math.max(0, quantity - 500) * itemPrice * 0.05 +
-    Math.min(quantity * itemPrice * 0.1, 100.0);
+  double basePrice = quantity * itemPrice; 
+  double discount = Math.max(0, quantity - 500) * itemPrice * 0.05; 
+  double shippingCost = Math.min(quantity * itemPrice * 0.1, 100.0)
+
+  return basePrice - discount + shippingCost;
 }
 ```
+
+Comments ==> add variables 
 
 ## Exercise 2.4
 
@@ -79,6 +104,13 @@ public class Phone {
     public String getNumber() {
         return unformattedNumber.substring(6,10);
     }
+
+    public String getPhoneNumber() {
+        return "(" + 
+        getAreaCode() + ") " +
+        getPrefix() + "-" +
+        getNumber();
+    }
 }
 
 public class Human {
@@ -87,14 +119,11 @@ public class Human {
     
     // constructor and other methods
     
-    public String getPhoneNumber() {
-        return "(" + 
-        phone.getAreaCode() + ") " +
-        phone.getPrefix() + "-" +
-        phone.getNumber();
-    }
+   
 }
 ```
+
+Feature envy ==> move method 
 
 * * *
 
