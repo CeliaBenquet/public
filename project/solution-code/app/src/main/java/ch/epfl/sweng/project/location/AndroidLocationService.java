@@ -2,7 +2,11 @@ package ch.epfl.sweng.project.location;
 
 import android.content.Context;
 import android.location.Criteria;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
+
+import java.util.function.Consumer;
 
 public final class AndroidLocationService implements LocationService {
     private final LocationManager locationManager;
@@ -70,5 +74,36 @@ public final class AndroidLocationService implements LocationService {
             throw ex;
         }
 
+    }
+
+    @Override
+    public void subscribeToLocationUpdates(Consumer<Location> consumer) {
+        LocationListener listener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location loc) {
+                Location location = new Location(loc.getLatitude(), loc.getLongitude());
+                consumer.accept(location);
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+            }
+        };
+
+        try {
+            consumer.accept(getCurrentLocation());
+            this.locationManager.requestLocationUpdates(getLocationProvider(), 3000, 1, listener);
+
+        } catch (SecurityException ex) {
+            throw  ex;
+        }
     }
 }

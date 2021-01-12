@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
@@ -53,10 +56,12 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView mWeatherMaxTemperatureTextView;
 
     private InputMethodManager mInputMethodManager;
+    private WeatherActivityViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_weather);
 
         mWeatherUseGps = findViewById(R.id.weatherUseGps);
@@ -71,23 +76,46 @@ public class WeatherActivity extends AppCompatActivity {
 
         mInputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        // Create weather and location services.
-        Criteria criteria = new Criteria();
-        criteria.setPowerRequirement(Criteria.POWER_MEDIUM);
+        requestLocationPermission();
+    }
 
-        // In an actual app, we will prefer using dependency injection to get these services, as it
-        // makes it way easier to test the app, and allows for quick implementation swapping.
-        // You'll learn more about that in the testing step of the project!
-        mLocationService = AndroidLocationService.buildFromContextAndCriteria(this, criteria);
-        mWeatherService = OpenWeatherMapWeatherService.buildFromContext(this);
-        mGeocodingService = AndroidGeocodingService.fromContext(this);
+    private void locationGranted() {
+        // Instantiate ViewModel
+        mViewModel = new ViewModelProvider(this).get(WeatherActivityViewModel.class);
 
-        // Load the weather on button click.
-        mWeatherQuery.setOnClickListener(v -> loadWeather());
+        mViewModel.getWeather().observe(this, this::updateForecast);
+        mViewModel.getIsUsingGPS().observe(this, useGPS -> mWeatherCityName.setEnabled(!useGPS));
+        mViewModel.canQueryWeather().observe(this, mWeatherQuery::setEnabled);
 
+        // Initialization
+        mViewModel.setIsUsingGPS(mWeatherUseGps.isChecked());
+        mViewModel.setSelectedAddress(mWeatherCityName.getEditableText().toString());
+
+        // Send info to ViewModel
         // Disable the city name text field whenever we use the GPS.
         mWeatherUseGps.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            mWeatherCityName.setEnabled(!isChecked);
+            mViewModel.setIsUsingGPS(isChecked);
+        });
+
+        mWeatherQuery.setOnClickListener(v -> {
+            View currentFocus = getCurrentFocus();
+            if (currentFocus != null) {
+                mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+            }
+            mViewModel.refreshWeather();
+        });
+
+        mWeatherCityName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mViewModel.setSelectedAddress(charSequence.toString());
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         mWeatherTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -95,12 +123,12 @@ public class WeatherActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 displayForecast();
             }
-
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) { }
-
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
             @Override
-            public void onTabReselected(TabLayout.Tab tab) { }
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
         });
 
         // Query the forecast when the user types Enter in the city text field
@@ -111,6 +139,18 @@ public class WeatherActivity extends AppCompatActivity {
             }
             return false;
         });
+
+    }
+
+    private void requestLocationPermission(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PERMISSION_REQUEST_CODE);
+        } else {
+            locationGranted();
+        }
     }
 
     private void displayForecast() {
@@ -139,43 +179,10 @@ public class WeatherActivity extends AppCompatActivity {
         displayForecast();
     }
 
-    private void loadWeather() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_CODE);
-            return;
-        }
-
-        // Make sure that the keyboard is hidden before loading the forecast
-        View currentFocus = getCurrentFocus();
-        if(currentFocus != null) {
-            mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-
-        try {
-            Location loc;
-            if(mWeatherUseGps.isChecked()) {
-                // Here we use the location service to query our current location.
-                loc = mLocationService.getCurrentLocation();
-            } else {
-                // Here we use the given city name as our query location
-                String cityName = mWeatherCityName.getText().toString();
-                loc = mGeocodingService.getLocation(cityName);
-            }
-
-            WeatherForecast forecast = mWeatherService.getForecast(loc);
-            // TODO(Dorian): See if it is necessary to display the address on the UI
-            // Address address = mGeocodingService.getAddress(loc);
-            updateForecast(forecast);
-        } catch (IOException e) {
-            Log.e("WeatherActivity", "Error when retrieving forecast.", e);
-        }
-    }
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            loadWeather();
+            requestLocationPermission();
             // We immediately call back the function, if the permission was not granted the prompt will be shown again
             // This is a dirty solution indeed, in the real world one would display an error message and the app
             // would work in a degraded way.
