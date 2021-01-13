@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModel;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 import ch.epfl.sweng.project.geocoding.GeocodingService;
 import ch.epfl.sweng.project.location.Location;
 import ch.epfl.sweng.project.location.LocationService;
+import ch.epfl.sweng.project.utils.CompletionStageLiveData;
 import ch.epfl.sweng.project.weather.WeatherForecast;
 import ch.epfl.sweng.project.weather.WeatherService;
 
@@ -28,7 +30,7 @@ public class WeatherActivityViewModel extends ViewModel {
     private MutableLiveData<Boolean> isUsingGPS = new MutableLiveData<>(false);
     private MutableLiveData<Location> currentLocation;
     private MutableLiveData<String> selectedAddress = new MutableLiveData<>(null);
-    private LiveData<Location> locationAtSelectedAddress;
+    private MutableLiveData<Location> locationAtSelectedAddress;
     private LiveData<Location> selectedLocation;
 
 
@@ -42,15 +44,14 @@ public class WeatherActivityViewModel extends ViewModel {
         this.currentLocation = new MutableLiveData<>(null);
         this.mLocationService.subscribeToLocationUpdates(currentLocation::postValue);
 
-        this.locationAtSelectedAddress = Transformations.map(selectedAddress, address -> {
+
+        this.locationAtSelectedAddress = Transformations.switchMap(selectedAddress, address -> {
             if (address != null) {
-                try {
-                    return mGeocodingService.getLocation(address);
-                } catch (IOException e) {
-                    // Address not found
-                    return null;
-                }
-            } else { return null; }
+                return new CompletionStageLiveData<>(mGeocodingService
+                        .getLocation(address));
+            } else {
+                return null;
+            }
         });
 
         this.selectedLocation = Transformations.switchMap(isUsingGPS, useGPS -> useGPS ? currentLocation : locationAtSelectedAddress);
@@ -73,11 +74,11 @@ public class WeatherActivityViewModel extends ViewModel {
             Log.e("WeatherActivityViewModel", "Trying to get weather but no location");
             this.currentWeather.postValue(null);
         } else {
-            try {
-                this.currentWeather.postValue(this.mWeatherService.getForecast(loc));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            CompletableFuture<WeatherForecast> future = this.mWeatherService.getForecast(loc);
+            future.exceptionally(ex -> {
+                ex.printStackTrace();
+                return null;
+            }).thenAccept(this.currentWeather::postValue);
         }
     }
 

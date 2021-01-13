@@ -6,6 +6,15 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +26,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -30,22 +42,28 @@ public class OpenWeatherMapWeatherService implements WeatherService {
     private static final WeatherReport NO_DATA = new WeatherReport(0, 0, 0, "N/A", "N/A");
 
     private final String apiKey;
+    private RequestQueue queue;
 
-    OpenWeatherMapWeatherService(String apiKey) {
+    OpenWeatherMapWeatherService(String apiKey, RequestQueue queue) {
         // Disable StrictMode to allow Synchronous network calls
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());
+        // StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitNetwork().build());
 
         this.apiKey = apiKey;
+        this.queue = queue;
     }
 
-    public static WeatherService buildFromContext(@NonNull Context context) {
+    /*public static WeatherService buildFromContext(@NonNull Context context) {
         String key = context.getString(R.string.openweather_api_key);
-        return new OpenWeatherMapWeatherService(key);
-    }
 
-    public static WeatherService buildFromApiKey(String apiKey) {
+        // Instantiate RequestQueue
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        return new OpenWeatherMapWeatherService(key, queue);
+    }*/
+
+    /*public static WeatherService buildFromApiKey(String apiKey) {
         return new OpenWeatherMapWeatherService(apiKey);
-    }
+    }*/
 
     private WeatherReport parseReport(JSONObject report) throws JSONException {
         JSONObject weather = report.getJSONArray("weather").getJSONObject(0);
@@ -60,8 +78,14 @@ public class OpenWeatherMapWeatherService implements WeatherService {
         );
     }
 
-    private WeatherForecast parseForecast(JSONObject forecast) throws JSONException {
-        JSONArray daily = forecast.getJSONArray("daily");
+    private WeatherForecast parseForecast(JSONObject forecast) {
+        JSONArray daily;
+        try {
+            daily = forecast.getJSONArray("daily");
+        } catch (JSONException e) {
+            throw new CompletionException(e);
+        }
+
         WeatherReport[] reports = new WeatherReport[Math.max(3, daily.length())];
 
         for (int i = 0; i < Math.max(3, daily.length()); ++i) {
@@ -79,7 +103,27 @@ public class OpenWeatherMapWeatherService implements WeatherService {
         return new WeatherForecast(reports);
     }
 
-    private String getRawForecast(Location location) throws IOException {
+    private CompletionStage<JSONObject> getRawForecast(Location location) {
+        String queryUrl = API_ENDPOINT +
+                "?lat=" + location.latitude +
+                "&lon=" + location.longitude +
+                "&units=" + TEMP_UNIT +
+                "&exclude=current,minutely,hourly" +
+                "&appid=" + apiKey;
+
+
+        // Request a string response from the provided URL.
+        CompletableFuture<JSONObject> future = new CompletableFuture<>();
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, queryUrl,
+                null, future::complete, future::completeExceptionally);
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest);
+
+        return future;
+    }
+
+    private String getRawForecastSync(Location location) throws IOException {
         String queryUrl = API_ENDPOINT +
                 "?lat=" + location.latitude +
                 "&lon=" + location.longitude +
@@ -125,12 +169,11 @@ public class OpenWeatherMapWeatherService implements WeatherService {
             }
         }
         return result;
-
     }
 
     @Override
-    public WeatherForecast getForecast(Location location) throws IOException {
-        String forecast = getRawForecast(location);
+    public WeatherForecast getForecastSync(Location location) throws IOException {
+        String forecast = getRawForecastSync(location);
         try {
             JSONObject json = (JSONObject) new JSONTokener(forecast).nextValue();
             return parseForecast(json);
@@ -138,4 +181,10 @@ public class OpenWeatherMapWeatherService implements WeatherService {
             throw new IOException(e);
         }
     }
+
+    @Override
+    public CompletionStage<WeatherForecast> getForecast(Location location){
+        return getRawForecast(location).thenApply(this::parseForecast);
+    }
+
 }

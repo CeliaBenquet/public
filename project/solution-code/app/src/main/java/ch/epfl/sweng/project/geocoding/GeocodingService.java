@@ -3,6 +3,8 @@ package ch.epfl.sweng.project.geocoding;
 import androidx.annotation.NonNull;
 
 import java.io.IOException;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Future;
 
 import ch.epfl.sweng.project.location.Location;
 
@@ -21,7 +23,8 @@ public interface GeocodingService {
      *
      * @throws IOException if the network is unavailable
      */
-    Location getLocation(@NonNull String address) throws IOException;
+    Location getLocationSync(@NonNull String address) throws IOException;
+    CompletionStage<Location> getLocation(@NonNull String address) throws IOException;
 
     /**
      * Get the address corresponding to a location
@@ -31,5 +34,7 @@ public interface GeocodingService {
      *
      * @throws IOException if the network is unavailable
      */
-    Address getAddress(@NonNull Location location) throws IOException;
-}
+    CompletionStage<Address> getAddress(@NonNull Location location) throws IOException;
+    Address getAddressSync(@NonNull Location location) throws IOException;
+
+    }
